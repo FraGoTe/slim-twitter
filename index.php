@@ -2,38 +2,41 @@
 
 require_once 'vendor/autoload.php';
 
-use Zend\Http\Request;
-use Zend\Http\Client;
-use Zend\Stdlib\Parameters;
 use Slim\Slim;
+use ZendService\Twitter\Twitter;
 
-$app = new Slim(
-	array(
-		'templates.path' => 'view'
-	)
+$slimConfig = array(
+    'templates.path' => 'view'
 );
 
-$app->map('/', function () use ($app) {
-	$twitterUsername = 'FraGoTe';
-	$timeLineUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=' . $twitterUsername;
+$twitterAuth = array(
+    'access_token' => array(
+        'token'  => '22295195-HmsGlFHZAQDGTY7wDw5rCbwTRX5xpWXDoKLbKm035',
+        'secret' => '4cjWbLPEbhnWcEirkTJuYd1j9S2xum6Otysa71zKPoher',
+    ),
+    'oauth_options' => array(
+        'consumerKey' => '8Pqof9viqPpQNUX7868zeRmjA',
+        'consumerSecret' => '7jBPKJZ1PDPnNEYG2SxxOkGSH7GRWVaqkQrORtX7yFCL8eghcj',
+    ),
+    'http_client_options' => array(
+        'adapter' => 'Zend\Http\Client\Adapter\Curl',
+        'curloptions' => array(
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSLVERSION => 4
+        ),
+    ),
+);
 
-	$request = new Request();
-	$request->getHeaders()->addHeaders(
-		array(
-	    	'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
-	    	'Authorization' => ' Authorization: OAuth oauth_consumer_key="8Pqof9viqPpQNUX7868zeRmjA", oauth_nonce="7a3c32b7c1323c08be13bec2aadba3cf", oauth_signature="y7uQ2RjFKezy1VFQY5LU96KFnKY%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1437534655", oauth_token="22295195-HmsGlFHZAQDGTY7wDw5rCbwTRX5xpWXDoKLbKm035", oauth_version="1.0"'
-		)
-	);
+$app = new Slim($slimConfig);
+$twitter = new Twitter($twitterAuth);
 
-	$request->setUri($timeLineUrl);
-	$request->setMethod('GET');
-
-	$client = new Client();
-	$response = $client->dispatch($request);
-	$twitterData = json_decode($response->getBody(), true);
+$app->map('/', function () use ($app, $twitter) {
+    //$response = $twitter->account->verifyCredentials();
+    $twitterData = $twitter->statuses->userTimeline(array('screen_name' => 'FraGoTe'));
     
     $app->render('index.twig', array(
-        'twitterData' => $twitterData
+        'twitterData' => $twitterData->toValue()
     ));
 })->via('GET', 'POST');
 

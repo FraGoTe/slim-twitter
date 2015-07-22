@@ -6,5 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ZendService\\Twitter\\' => array($vendorDir . '/zendframework/zendservice-twitter/library'),
+    'ZendOAuth' => array($vendorDir . '/zendframework/zendoauth/library'),
     'Slim' => array($vendorDir . '/slim/slim'),
 );
