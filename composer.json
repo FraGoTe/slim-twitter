@@ -1,0 +1,7 @@
+{
+    "require": {
+    	"slim/slim": "*",
+		"zendframework/zend-http": "*",
+		"zendframework/zend-stdlib": "*"
+    }
+}
