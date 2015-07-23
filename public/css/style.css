@@ -1,0 +1,12 @@
+/* 
+    Created on : 23/07/2015, 07:36:32 AM
+    Author     : fgonzales
+*/
+
+.containerHeight {
+    height: 850px;
+}
+
+.rmBorRight {
+    border-right: 0 !important;
+}
