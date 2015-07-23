@@ -34,7 +34,7 @@ func.searchData = function() {
 
                     var rowData = '<tr><td class="rmBorRight">' + imgData + '</td><td>' +  
                                     value.text + '<br/><small>' + 
-                                    'ssadsasdasd</small></td>' +
+                                    value.created_at + '</small></td>' +
                                     '</tr>';
 
                     //point to map
