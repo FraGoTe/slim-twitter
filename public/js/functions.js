@@ -15,7 +15,7 @@ $(document).ready(function () {
     
     func.searchData();
     
-    setInterval(function(){ alert("Hello"); }, 30000);
+    setInterval(function(){ func.searchData(); }, 30000);
 });
 
 function initialize() {
